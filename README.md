@@ -42,18 +42,21 @@ Extensão Chrome
 ---
 
 ## 🚀 Subindo a aplicação
+Certifique de ter as seguintes versões das tecnologias utilizadas em sua máquina:
+`Git`; `Python3`; `Node 22`.
+
 No terminal do seu computador, clone o projeto com o comando:
 ```
 git clone https://github.com/lucasedferreira/s-gemini.git
 ```
 
 ### Frontend
-Entre na pasta frontend, e execute:
+Num novo teminal, navegue até a raiz do seu projeto, entre na pasta `frontend` e execute:
 ```
 npm install
 ```
 
-Suba o projeto com:
+Suba o frontend com:
 ```
 npm run dev
 ```
