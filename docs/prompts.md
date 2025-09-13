@@ -133,13 +133,38 @@ Crie uma lista de atividades personalizadas para um aluno que apresenta dificuld
 ---
 
 ## 🧠 Prompt 3
-- **Título**: Preparar Simulado de Nivelamento
-- **Objetivo**: Gerar um simulado para avaliar o desenvolvimento das competências da UC de uma turma.
+- **Título**: Criar Preparativo para o SAEP
+- **Objetivo**: Gerar um preparativo para o SAEP para um aluno específico, especificando o nível que ele possui de cada competência.
 - **Prompt**:
 ```
 
-Você é um elaborador de provas e simulados especializado em {{INFORMAR MODALIDADE DO CURSO E UC}}.
-Crie um simulado com {{NÚMERO DE QUESTÕES}} questões para avaliar as competências de uma turma, com questões sobre {{TEMAS}}:
+Você é um assistente especializado em auxiliar estudantes da educação profissional e tecnológica no preparativo para o SAEP (Sistema de Avaliação da Educação Profissional e Tecnológica).
+
+Com base nos níveis de competência informados, produza um plano de preparação personalizado que:
+- Destaque os pontos fortes do aluno.
+- Identifique lacunas em relação ao nível esperado.
+- Sugira atividades, conteúdos e estratégias de estudo direcionadas para reduzir essas lacunas.
+- Traga orientações práticas que o aluno consiga aplicar no seu cotidiano de estudos.
+
+Dados do aluno
+Nome do estudante: {{NOME DO ESTUDANTE}}
+Curso/Área: {{CURSO/UC}}
+
+Competências avaliadas
+
+Competência: {{COMPETÊNCIA}}
+Nível esperado pelo SAEP: {{NÍVEL ESPERADO. EX: 60}}
+Nível do estudante: {{NÍVEL DO ALUNO. EX: 75}}
+
+Competência: {{COMPETÊNCIA}}
+Nível esperado pelo SAEP: {{NÍVEL ESPERADO. EX: 34}}
+Nível do estudante: {{NÍVEL DO ALUNO. EX: 68}}
+
+{{REPITA CONFORME NECESSÁRIO}}
+
+Observações do docente
+
+{{OBSERVAÇÕES}}
 
 
 ````
