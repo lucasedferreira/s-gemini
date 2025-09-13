@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Home, User, Settings, Brain, BookOpen, Users, ChevronDown, ChevronRight } from "lucide-react";
+import { Home, User, Settings, Brain, BookOpen, Users, ChevronDown, ChevronRight, FileText } from "lucide-react";
 import { NavLink } from "react-router-dom";
 import {
   Sidebar,
@@ -20,6 +20,7 @@ import rosieLogoUrl from "@/assets/rosie-logo.png";
 const mainItems = [
   { title: "Home", url: "/", icon: Home },
   { title: "Análise de Aluno", url: "/analise-aluno", icon: User },
+  { title: "Prompts", url: "/prompts", icon: FileText },
 ];
 
 const configItems = [

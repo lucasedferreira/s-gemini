@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Layout } from "./components/Layout";
 import Home from "./pages/Home";
 import AnaliseAluno from "./pages/AnaliseAluno";
+import Prompts from "./pages/Prompts";
 import Gemini from "./pages/Gemini";
 import Cursos from "./pages/Cursos";
 import Turmas from "./pages/Turmas";
@@ -23,6 +24,7 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/analise-aluno" element={<AnaliseAluno />} />
+            <Route path="/prompts" element={<Prompts />} />
             <Route path="/configuracoes/gemini" element={<Gemini />} />
             <Route path="/configuracoes/cursos" element={<Cursos />} />
             <Route path="/configuracoes/turmas" element={<Turmas />} />
