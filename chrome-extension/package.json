@@ -1,0 +1,14 @@
+{
+    "scripts": {
+        "build": "rm -rf dist && npm run copy-pdfjs && npm run copy-manifest",
+        "copy-pdfjs": "shx mkdir -p dist/node_modules/pdfjs-dist/build && shx cp -r node_modules/pdfjs-dist/build/pdf.min.mjs dist/node_modules/pdfjs-dist/build/ && shx cp -r node_modules/pdfjs-dist/build/pdf.worker.min.mjs dist/node_modules/pdfjs-dist/build/",
+        "copy-manifest": "shx cp manifest.json dist/ && shx cp popup.html dist/ && shx cp popup.js dist/ && shx cp pdf-service.js dist/ && shx cp pdf-loader.js dist/ && shx cp pdf-fallback.js dist/ && shx cp pdf-extraction-functions.js dist/ && shx cp -r icons/ dist/",
+        "dev": "rmnpm run build && echo 'Extensão construída na pasta dist/'"
+    },
+    "dependencies": {
+        "pdfjs-dist": "^5.4.149"
+    },
+    "devDependencies": {
+        "shx": "^0.4.0"
+    }
+}

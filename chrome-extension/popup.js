@@ -1,38 +1,141 @@
+console.log('Popup carregado');
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+    console.log('Mensagem recebida:', message);
+});
+
 document.addEventListener('DOMContentLoaded', function () {
     const API_URL = 'http://localhost:5000';
 
     const copyBtn = document.getElementById('copyBtn');
     const analyzeBtn = document.getElementById('analyzeBtn');
     const status = document.getElementById('status');
+    const pdfStatus = document.getElementById('pdfStatus');
 
     let extractedData = null;
 
-    extractData();
+    checkCurrentTab();
 
     copyBtn.addEventListener('click', handleCopy);
     analyzeBtn.addEventListener('click', handleAnalyze);
 
+    async function checkCurrentTab() {
+        const tab = await getCurrentTab();
+        if (isValidPDFTab(tab)) {
+            pdfStatus.textContent = '📄 PDF detectado. Clique para extrair dados';
+            pdfStatus.className = 'status success';
+        } else {
+            pdfStatus.textContent = '📄 Navegue até um PDF para extrair dados';
+            pdfStatus.className = 'status info';
+        }
+    }
+
     async function extractData() {
         try {
-            showStatus('Extraindo dados...', 'info');
+            showStatus('Analisando PDF...', 'info');
 
             const tab = await getCurrentTab();
-            if (!isValidTab(tab)) return;
+            if (!isValidPDFTab(tab)) {
+                showStatus('Navegue até um PDF primeiro', 'error');
+                return null;
+            }
 
-            await chrome.scripting.executeScript({
-                target: { tabId: tab.id },
-                files: ['extraction-functions.js']
-            });
+            // Inject necessary scripts
+            await injectScripts(tab.id);
 
-            const results = await chrome.scripting.executeScript({
-                target: { tabId: tab.id },
-                func: () => extractAllData()
-            });
+            // Extract PDF text
+            const pdfText = await executeScriptFunction(tab.id, extractPDFTextFromPage);
+            if (!pdfText) {
+                showStatus('Erro ao extrair texto do PDF', 'error');
+                return null;
+            }
 
-            processExtractionResults(results);
+            // Extract structured data
+            console.log(`entrou`, `- popup:`, 53);
+            const extractionResults = await executeScriptFunction(tab.id, extractStructuredData, [pdfText]);
+console.log(`extractionResults`, extractionResults);
+            if (extractionResults) {
+                extractedData = extractionResults;
+                showStatus('Dados extraídos com sucesso!', 'success');
+                setTimeout(hideStatus, 2000);
+                pdfStatus.textContent = '✅ Dados extraídos com sucesso';
+                pdfStatus.className = 'status success';
+                return extractedData;
+            } else {
+                showStatus('Não foi possível extrair os dados estruturados', 'error');
+                return null;
+            }
 
         } catch (error) {
-            console.error('Erro na extração automática:', error);
+            console.error('Erro na extração:', error);
+            showStatus('Erro ao extrair dados do PDF', 'error');
+            return null;
+        }
+    }
+
+    async function injectScripts(tabId) {
+        const scripts = [
+            'pdf-service.js',
+            'pdf-extraction-functions.js'
+        ];
+
+        for (const script of scripts) {
+            try {
+                await chrome.scripting.executeScript({
+                    target: { tabId: tabId },
+                    files: [script]
+                });
+            } catch (error) {
+                console.warn(`Script ${script} já injetado ou erro:`, error);
+            }
+        }
+    }
+
+    async function executeScriptFunction(tabId, func, args = []) {
+        try {
+            console.log(`teste`, `- popup:`, 94);
+            const results = await chrome.scripting.executeScript({
+                target: { tabId: tabId },
+                func: func,
+                args: args
+            });
+
+            console.log(`results`, results);
+            return results && results[0] ? results[0].result : null;
+        } catch (error) {
+            console.error('Erro ao executar função:', error);
+            return null;
+        }
+    }
+
+    // Funções que serão executadas na página do PDF
+    async function extractPDFTextFromPage() {
+        try {
+            if (typeof pdfService === 'undefined') {
+                console.error('PDFService não está disponível');
+                return null;
+            }
+
+            await pdfService.initialize();
+            const pdfText = await pdfService.extractPDFData(window.location.href);
+            console.log(`pdfText`, pdfText);
+            return pdfText;
+        } catch (error) {
+            console.error('Erro ao extrair texto do PDF:', error);
+            return null;
+        }
+    }
+
+    function extractStructuredData(pdfText) {
+        try {
+            if (typeof extractAllDataFromPDF === 'undefined') {
+                console.error('Funções de extração não estão disponíveis');
+                return null;
+            }
+
+            return extractAllDataFromPDF(pdfText);
+        } catch (error) {
+            console.error('Erro ao extrair dados estruturados:', error);
+            return null;
         }
     }
 
@@ -41,69 +144,51 @@ document.addEventListener('DOMContentLoaded', function () {
         return tab;
     }
 
-    function isValidTab(tab) {
-        if (!tab.url.startsWith('http')) {
-            return false;
-        }
-        return true;
+    function isValidPDFTab(tab) {
+        return tab.url.toLowerCase().endsWith('.pdf') ||
+            tab.url.includes('pdf') ||
+            (tab.mimeType && tab.mimeType === 'application/pdf') ||
+            tab.url.includes('application/pdf');
     }
 
-    function processExtractionResults(results) {
-        if (results && results[0] && results[0].result) {
-            const response = results[0].result;
-
-            if (!response.error) {
-                extractedData = response;
-                showStatus('Dados extraídos com sucesso!', 'success');
-                setTimeout(hideStatus, 2000);
-            }
-        }
-    }
-
-    function handleCopy() {
+    async function handleCopy() {
         if (!extractedData) {
             showStatus('Extraindo dados...', 'info');
-            setTimeout(() => {
-                if (!extractedData) {
-                    showStatus('Não foi possível extrair os dados', 'error');
-                } else {
-                    copyTeachingPlan();
-                }
-            }, 1000);
-            return;
+            const data = await extractData();
+            if (data) {
+                copyTeachingPlan();
+            } else {
+                showStatus('Não foi possível extrair os dados', 'error');
+            }
+        } else {
+            copyTeachingPlan();
         }
+    }
 
-        copyTeachingPlan();
+    async function handleAnalyze() {
+        if (!extractedData) {
+            showStatus('Extraindo dados...', 'info');
+            const data = await extractData();
+            if (data) {
+                sendToGemini();
+            } else {
+                showStatus('Não foi possível extrair os dados', 'error');
+            }
+        } else {
+            sendToGemini();
+        }
     }
 
     function copyTeachingPlan() {
         const teachingPlanText = generateTeachingPlanText(extractedData);
-
         navigator.clipboard.writeText(teachingPlanText)
             .then(() => showStatus('Plano copiado!', 'success'))
             .catch(err => showStatus('Erro ao copiar', 'error'));
     }
 
-    function handleAnalyze() {
-        if (!extractedData) {
-            showStatus('Extraindo dados...', 'info');
-            setTimeout(() => {
-                if (!extractedData) {
-                    showStatus('Não foi possível extrair os dados', 'error');
-                } else {
-                    sendToGemini();
-                }
-            }, 1000);
-            return;
-        }
-
-        sendToGemini();
-    }
-
     async function sendToGemini() {
         try {
             showStatus('Enviando para análise...', 'info');
-
             const promptText = generatePrompt(extractedData);
 
             const response = await fetch(`${API_URL}/api/analyze`, {
@@ -114,8 +199,11 @@ document.addEventListener('DOMContentLoaded', function () {
                 body: JSON.stringify({ prompt: promptText })
             });
 
-            const data = await response.json();
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
 
+            const data = await response.json();
             if (data.success) {
                 openAnalysisResults(data.html_content, data.text_response);
                 showStatus('Análise concluída!', 'success');
@@ -123,68 +211,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 showStatus('Erro na análise: ' + data.error, 'error');
             }
         } catch (error) {
+            console.error('Erro de conexão:', error);
             showStatus('Erro de conexão com o servidor', 'error');
-            console.error('Erro:', error);
         }
-    }
-
-    function openAnalysisResults(htmlContent, textContent) {
-        const html = `
-        <!DOCTYPE html>
-        <html>
-        <head>
-            <meta charset="utf-8">
-            <title>Análise do Plano de Ensino</title>
-            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.2.0/github-markdown.min.css">
-            <style>
-                body {
-                    font-family: Arial, sans-serif;
-                    margin: 0;
-                    padding: 20px;
-                    background-color: #f5f5f5;
-                }
-                .container {
-                    max-width: 900px;
-                    margin: 0 auto;
-                    background: white;
-                    padding: 30px;
-                    border-radius: 8px;
-                    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-                }
-                .markdown-body {
-                    box-sizing: border-box;
-                    min-width: 200px;
-                    max-width: 980px;
-                    margin: 0 auto;
-                    padding: 45px;
-                    background-color: unset;
-                    color: unset;
-                }
-                .actions {
-                    text-align: center;
-                    margin: 20px 0;
-                }
-                @media (max-width: 767px) {
-                    .markdown-body {
-                        padding: 15px;
-                    }
-                }
-            </style>
-        </head>
-        <body>
-            <div class="container">
-                <h1 style="text-align: center; color: #1B74C5;">Análise do Plano de Ensino</h1>
-                <article class="markdown-body">
-                    ${htmlContent}
-                </article>
-            </div>
-        </body>
-        </html>
-        `;
-
-        const blob = new Blob([html], { type: 'text/html' });
-        const url = URL.createObjectURL(blob);
-        chrome.tabs.create({ url: url });
     }
 
     function generateTeachingPlanText(dados) {
@@ -345,6 +374,65 @@ Segue o Plano de Ensino:
         }
 
         return prompt;
+    }
+
+    function openAnalysisResults(htmlContent, textContent) {
+        const html = `
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <meta charset="utf-8">
+            <title>Análise do Plano de Ensino</title>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.2.0/github-markdown.min.css">
+            <style>
+                body {
+                    font-family: Arial, sans-serif;
+                    margin: 0;
+                    padding: 20px;
+                    background-color: #f5f5f5;
+                }
+                .container {
+                    max-width: 900px;
+                    margin: 0 auto;
+                    background: white;
+                    padding: 30px;
+                    border-radius: 8px;
+                    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                }
+                .markdown-body {
+                    box-sizing: border-box;
+                    min-width: 200px;
+                    max-width: 980px;
+                    margin: 0 auto;
+                    padding: 45px;
+                    background-color: unset;
+                    color: unset;
+                }
+                .actions {
+                    text-align: center;
+                    margin: 20px 0;
+                }
+                @media (max-width: 767px) {
+                    .markdown-body {
+                        padding: 15px;
+                    }
+                }
+            </style>
+        </head>
+        <body>
+            <div class="container">
+                <h1 style="text-align: center; color: #1B74C5;">Análise do Plano de Ensino</h1>
+                <article class="markdown-body">
+                    ${htmlContent}
+                </article>
+            </div>
+        </body>
+        </html>
+        `;
+
+        const blob = new Blob([html], { type: 'text/html' });
+        const url = URL.createObjectURL(blob);
+        chrome.tabs.create({ url: url });
     }
 
     function showStatus(message, type) {
