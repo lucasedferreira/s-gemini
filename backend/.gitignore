@@ -1,0 +1,23 @@
+# Ambiente virtual
+venv/
+.env
+.env.local
+.env.*.local
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg-info/
+.python-version
+
+# Logs
+*.log
+logs/
+
+# Arquivos temporários e de sistema
+.DS_Store
+Thumbs.db
+temp/
+tmp/
