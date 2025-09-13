@@ -1,3 +1,5 @@
+debug/
+
 # Ambiente virtual
 venv/
 .env

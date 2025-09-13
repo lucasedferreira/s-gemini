@@ -1,0 +1,52 @@
+services:
+  postgres:
+    image: postgres:17.6-alpine
+    container_name: sgemini_db
+    environment:
+      POSTGRES_DB: sgemini
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U root -d sgemini"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build: ./backend
+    container_name: sgemini_backend
+    ports:
+      - "5000:5000"
+    environment:
+      - DATABASE_URL=postgresql://root:root@postgres:5432/sgemini
+    volumes:
+      - ./backend/.env:/app/.env
+      - ./backend/uploads:/app/uploads
+      - ./backend/debug:/app/debug
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+
+  frontend:
+    build: ./frontend
+    container_name: sgemini_frontend
+    ports:
+      - "8080:8080"
+    environment:
+      - VITE_API_URL=http://localhost:5000
+      - CHOKIDAR_USEPOLLING=true
+      - WATCHPACK_POLLING=true
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
