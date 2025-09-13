@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Correção de Provas</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; }
+        input, textarea { padding: 8px; width: 100%; max-width: 400px; }
+        button { padding: 10px 15px; background-color: #007bff; color: white; border: none; cursor: pointer; }
+        button:hover { background-color: #0056b3; }
+        #result { margin-top: 20px; padding: 15px; border: 1px solid #ccc; }
+    </style>
+</head>
+<body>
+    <h1>Correção Automática de Provas</h1>
+    
+    <form id="uploadForm" enctype="multipart/form-data">
+        <div class="form-group">
+            <label for="file">Selecione o PDF da prova:</label>
+            <input type="file" id="file" name="file" accept=".pdf" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="gabarito">Gabarito (separado por espaços, ex: A B C D A):</label>
+            <input type="text" id="gabarito" name="gabarito" required>
+        </div>
+        
+        <button type="submit">Processar Prova</button>
+    </form>
+    
+    <div id="result"></div>
+    
+    <script>
+        document.getElementById('uploadForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData();
+            formData.append('file', document.getElementById('file').files[0]);
+            formData.append('gabarito', document.getElementById('gabarito').value);
+            
+            try {
+                const response = await fetch('/omr', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const result = await response.json();
+                document.getElementById('result').innerHTML = result.html || result.error;
+            } catch (error) {
+                document.getElementById('result').innerHTML = `<p style="color: red;">Erro: ${error.message}</p>`;
+            }
+        });
+    </script>
+</body>
+</html>
