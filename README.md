@@ -64,7 +64,11 @@ ROSiE foi projetado para atacar diretamente esses pontos, entregando automação
 * **Métricas por competência**: quais tópicos merecem prioridade para cada turma e para cada estudante.
 * **Análise de impacto**: estimativa de quanto tempo/recursos focar em determinados tópicos para maximizar retenção.
 
-## 7. Custo
+## 7. Prompts utilizados na criação do ROSiE
+
+* **Arquivo com todos os prompts documentados**: veja [neste documento](https://github.com/lucasedferreira/s-gemini/blob/master/docs/prompts.md) os prompts utilizados durante o desenvolvimento das automações no ROSiE, desde análise do plano de ensino até geração de conteúdos específicos para cada estudante.
+
+## 8. Custo
 
 * **Modo manual**: repositório de prompts e workflow para uso com a versão gratuita do Gemini.
 * **Modo automatizado**: integração do backend com API do Gemini por meio da API Key fornecida de forma gratuita.
