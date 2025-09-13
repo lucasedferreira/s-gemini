@@ -19,7 +19,7 @@ export function Layout({ children }: LayoutProps) {
               
               <div className="flex-1">
                 <h2 className="font-semibold text-lg text-foreground">
-                  Sistema de Análise Educacional ROSiE
+                  
                 </h2>
               </div>
             </div>

@@ -41,6 +41,24 @@ Extensão Chrome
 -
 ---
 
+## 🚀 Subindo a aplicação
+No terminal do seu computador, clone o projeto com o comando:
+```
+git clone https://github.com/lucasedferreira/s-gemini.git
+```
+
+### Frontend
+Entre na pasta frontend, e execute:
+```
+npm install
+```
+
+Suba o projeto com:
+```
+npm run dev
+```
+
+
 ## 🤝 Contribuição
 Sinta-se à vontade para abrir **issues** ou enviar **pull requests**. Toda contribuição é bem-vinda!
 

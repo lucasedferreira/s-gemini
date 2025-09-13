@@ -77,7 +77,7 @@ export default function Turmas() {
       <div>
         <h1 className="text-3xl font-bold text-foreground mb-2 flex items-center gap-3">
           <Users className="h-8 w-8 text-primary" />
-          Gerenciamento de Turmas
+          Turmas
         </h1>
         <p className="text-muted-foreground">
           Cadastre turmas e importe listas de alunos via Excel ou CSV

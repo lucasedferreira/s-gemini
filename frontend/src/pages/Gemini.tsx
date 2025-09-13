@@ -114,7 +114,7 @@ export default function Gemini() {
               asChild
             >
               <a 
-                href="https://makersuite.google.com/app/apikey" 
+                href="https://aistudio.google.com/app/apikey" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="flex items-center gap-2"
@@ -146,12 +146,12 @@ export default function Gemini() {
                 <p className="text-sm text-muted-foreground">
                   Visite{" "}
                   <a 
-                    href="https://makersuite.google.com/app/apikey" 
+                    href="https://aistudio.google.com/app/apikey" 
                     target="_blank" 
                     rel="noopener noreferrer"
                     className="text-primary hover:underline"
                   >
-                    https://makersuite.google.com/app/apikey
+                    https://aistudio.google.com/app/apikey
                   </a>{" "}
                   e faça login com sua conta Google.
                 </p>

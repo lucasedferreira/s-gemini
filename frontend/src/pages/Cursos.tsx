@@ -52,7 +52,7 @@ export default function Cursos() {
       <div>
         <h1 className="text-3xl font-bold text-foreground mb-2 flex items-center gap-3">
           <BookOpen className="h-8 w-8 text-primary" />
-          Gerenciamento de Cursos
+          Cursos
         </h1>
         <p className="text-muted-foreground">
           Configure cursos e seus materiais para análise de competências

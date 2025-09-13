@@ -67,7 +67,7 @@ export function AppSidebar() {
                     className={({ isActive }) => 
                       `flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
                         isActive 
-                          ? "bg-sidebar-primary text-sidebar-primary-foreground shadow-primary" 
+                          ? "bg-sidebar-primary text-sidebar-foreground shadow-primary" 
                           : "text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
                       }`
                     }
@@ -113,7 +113,7 @@ export function AppSidebar() {
                         className={({ isActive }) => 
                           `flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
                             isActive 
-                              ? "bg-sidebar-primary text-sidebar-primary-foreground shadow-primary" 
+                              ? "bg-sidebar-primary text-sidebar-foreground shadow-primary" 
                               : "text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
                           }`
                         }
