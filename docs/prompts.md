@@ -134,7 +134,7 @@ Crie uma lista de atividades personalizadas para um aluno que apresenta dificuld
 
 ## 🧠 Prompt 3
 - **Título**: Criar Preparativo para o SAEP
-- **Objetivo**: Gerar um preparativo para o SAEP para um aluno específico, especificando o nível que ele possui de cada competência.
+- **Objetivo**: Gerar um preparativo para o SAEP para um aluno específico, especificando o nível que ele possui e o esperado de cada competência.
 - **Prompt**:
 ```
 
@@ -166,6 +166,62 @@ Observações do docente
 
 {{OBSERVAÇÕES}}
 
+Pedido à IA
+
+Com base nos dados fornecidos, elabore um plano estruturado de preparação para o SAEP, incluindo:
+
+- Resumo das lacunas por competência.
+- Sugestões de estudo e prática específicas para cada competência.
+- Estratégias motivacionais e de organização de estudo.
+- Recomendações de materiais e atividades que possam ajudar o aluno a atingir o nível esperado.
+
+````
+
+---
+
+
+## 🧠 Prompt 4
+- **Título**: Criar exercícios teóricos
+- **Objetivo**: Gerar uma lista de exercícios para um aluno específico, determinando o nível que ele possui e o esperado de cada competência.
+- **Prompt**:
+```
+
+Você é um assistente especializado em criar exercícios teóricos personalizados para estudantes da educação profissional e tecnológica.
+
+Com base nas competências fornecidas, desenvolva exercícios que:
+- Estejam adequados ao nível atual do aluno, mas que também o desafiem a se aproximar do nível esperado.
+- Variem em formatos (questões abertas, múltipla escolha, situações-problema, estudos de caso, etc.).
+- Estimulem raciocínio, compreensão conceitual e aplicação prática.
+- Possam ser utilizados tanto em estudo individual quanto em sala de aula.
+
+Dados do aluno
+Nome do estudante: {{NOME DO ESTUDANTE}}
+Curso/Área: {{CURSO/UC}}
+
+Competências avaliadas
+
+Competência: {{COMPETÊNCIA}}
+Nível esperado pelo SAEP: {{NÍVEL ESPERADO. EX: 60}}
+Nível do estudante: {{NÍVEL DO ALUNO. EX: 75}}
+
+Competência: {{COMPETÊNCIA}}
+Nível esperado pelo SAEP: {{NÍVEL ESPERADO. EX: 34}}
+Nível do estudante: {{NÍVEL DO ALUNO. EX: 68}}
+
+{{REPITA CONFORME NECESSÁRIO}}
+
+Observações do docente
+
+{{OBSERVAÇÕES}}
+
+Pedido à IA
+
+Com base nas informações fornecidas, elabore uma lista de exercícios teóricos personalizados para o aluno.
+Organize a saída em tópicos por competência, e em cada uma apresente:
+- Exercícios básicos para consolidar o nível atual.
+- Exercícios intermediários para desenvolver habilidades próximas ao esperado.
+- Exercícios desafiadores que ajudem a alcançar o nível esperado.
+- Inclua também sugestões de como o aluno pode corrigir e avaliar suas próprias respostas.
 
 ````
 
