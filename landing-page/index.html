@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ROSiE - Reimaginar e Organizar os Saberes Individuais dos Estudantes</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Custom colors from the logo */
+        :root {
+            --rosie-blue: #3B82F6; /* A slightly adjusted blue for better web contrast */
+            --rosie-dark-blue: #1E40AF;
+            --rosie-red: #EF4444;
+            --rosie-yellow: #FBBF24;
+            --rosie-bg: #F9FAFB;
+        }
+        .bg-rosie-blue { background-color: var(--rosie-blue); }
+        .text-rosie-blue { color: var(--rosie-blue); }
+        .bg-rosie-dark-blue { background-color: var(--rosie-dark-blue); }
+        .text-rosie-dark-blue { color: var(--rosie-dark-blue); }
+        .bg-rosie-red { background-color: var(--rosie-red); }
+        .text-rosie-red { color: var(--rosie-red); }
+        .bg-rosie-yellow { background-color: var(--rosie-yellow); }
+        .text-rosie-yellow { color: var(--rosie-yellow); }
+        .border-rosie-yellow { border-color: var(--rosie-yellow); }
+
+        .feature-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .fade-in-section {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .fade-in-section.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body class="bg-rosie-bg text-gray-800">
+
+    <!-- Header / Navigation -->
+    <header class="bg-white/80 backdrop-blur-lg sticky top-0 z-50 shadow-sm">
+        <nav class="container mx-auto px-6 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <img src="rosie-logo.png" alt="ROSiE Logo" class="h-10 w-10">
+                <span class="text-2xl font-bold text-rosie-dark-blue">ROSiE</span>
+            </div>
+            <div class="hidden md:flex items-center space-x-6">
+                <a href="#desafios" class="text-gray-600 hover:text-rosie-blue transition duration-300">Desafios</a>
+                <a href="#funcionalidades" class="text-gray-600 hover:text-rosie-blue transition duration-300">Funcionalidades</a>
+                <a href="#tecnologias" class="text-gray-600 hover:text-rosie-blue transition duration-300">Tecnologias</a>
+                <a href="#conclusao" class="text-gray-600 hover:text-rosie-blue transition duration-300">Por que usar?</a>
+            </div>
+             <button id="mobile-menu-button" class="md:hidden p-2 rounded-md text-gray-600 hover:bg-gray-100 focus:outline-none">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+            </button>
+        </nav>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden px-6 pb-4">
+            <a href="#desafios" class="block py-2 text-gray-600 hover:text-rosie-blue transition duration-300">Desafios</a>
+            <a href="#funcionalidades" class="block py-2 text-gray-600 hover:text-rosie-blue transition duration-300">Funcionalidades</a>
+            <a href="#tecnologias" class="block py-2 text-gray-600 hover:text-rosie-blue transition duration-300">Tecnologias</a>
+            <a href="#conclusao" class="block py-2 text-gray-600 hover:text-rosie-blue transition duration-300">Por que usar?</a>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="min-h-screen flex items-center justify-center bg-white fade-in-section">
+            <div class="container mx-auto px-6 text-center">
+                <img src="rosie-logo.png" alt="ROSiE Logo" class="w-40 h-40 mx-auto mb-6">
+                <h1 class="text-4xl md:text-6xl font-bold text-rosie-dark-blue mb-4">Bem-vindo ao ROSiE</h1>
+                <p class="text-lg md:text-xl text-gray-600 mb-6 max-w-3xl mx-auto">
+                    <span class="font-semibold text-rosie-blue">R</span>eimaginar e <span class="font-semibold text-rosie-blue">O</span>rganizar os <span class="font-semibold text-rosie-blue">S</span>aberes <span class="font-semibold text-rosie-blue">I</span>ndividuais dos <span class="font-semibold text-rosie-blue">E</span>studantes
+                </p>
+                <p class="max-w-4xl mx-auto text-gray-700 leading-relaxed">
+                    ROSiE nasceu para enfrentar um problema real: como criar, centralizar e personalizar conteúdos pedagógicos que realmente façam os estudantes reterem conhecimento — reduzindo reprovações, evasão e retrabalho. Aproveitamos as capacidades do ecossistema Gemini para construir um fluxo que transforma planos de ensino em atividades, avaliações e relatórios orientados ao estudante, com ênfase em acessibilidade, custo zero e replicabilidade.
+                </p>
+                <div class="mt-8">
+                    <a href="#desafios" class="bg-rosie-blue text-white font-bold py-3 px-8 rounded-full hover:bg-rosie-dark-blue transition duration-300 text-lg">
+                        Descubra a Solução
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Desafios Section -->
+        <section id="desafios" class="py-20 fade-in-section">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold text-rosie-dark-blue">Desafios Enfrentados pelos Docentes</h2>
+                    <p class="text-lg text-gray-600 mt-2 max-w-2xl mx-auto">ROSiE foi projetado para atacar diretamente estes pontos, entregando automação e simplicidade.</p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Challenge Card -->
+                    <div class="bg-white p-6 rounded-lg shadow-md feature-card">
+                        <h3 class="text-xl font-bold text-rosie-red mb-2">Falta de tempo</h3>
+                        <p class="text-gray-700">Preparar planos de aula ricos, com atividades práticas criativas e recursos alinhados ao conteúdo demanda horas que muitas vezes não existem.</p>
+                    </div>
+                    <!-- Challenge Card -->
+                    <div class="bg-white p-6 rounded-lg shadow-md feature-card">
+                        <h3 class="text-xl font-bold text-rosie-red mb-2">Personalização em escala</h3>
+                        <p class="text-gray-700">Adaptar mesmo conteúdo para diferentes níveis, estilos de aprendizagem e turmas heterogêneas é trabalhoso e pouco viável manualmente.</p>
+                    </div>
+                    <!-- Challenge Card -->
+                    <div class="bg-white p-6 rounded-lg shadow-md feature-card">
+                        <h3 class="text-xl font-bold text-rosie-red mb-2">Baixo engajamento</h3>
+                        <p class="text-gray-700">Dificuldade em criar atividades interativas e dinâmicas que mantenham estudantes envolvidos e promovam aprendizado ativo.</p>
+                    </div>
+                    <!-- Challenge Card -->
+                    <div class="bg-white p-6 rounded-lg shadow-md feature-card">
+                        <h3 class="text-xl font-bold text-rosie-red mb-2">Organização de recursos</h3>
+                        <p class="text-gray-700">Recursos (tutoriais, prompts, avaliações) ficam espalhados; falta um repositório fácil de consultar e compartilhar.</p>
+                    </div>
+                    <!-- Challenge Card -->
+                    <div class="bg-white p-6 rounded-lg shadow-md feature-card">
+                        <h3 class="text-xl font-bold text-rosie-red mb-2">Avaliação e feedback</h3>
+                        <p class="text-gray-700">Gerar instrumentos de avaliação, analisar resultados e transformar isso em planos de recuperação é um processo lento.</p>
+                    </div>
+                    <!-- Challenge Card -->
+                    <div class="bg-white p-6 rounded-lg shadow-md feature-card">
+                        <h3 class="text-xl font-bold text-rosie-red mb-2">Replicabilidade e custo</h3>
+                        <p class="text-gray-700">Soluções que exigem softwares pagos ou configurações complexas não são viáveis para ampla difusão entre docentes.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Funcionalidades Section -->
+        <section id="funcionalidades" class="py-20 bg-white fade-in-section">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold text-rosie-dark-blue">Funcionalidades Principais</h2>
+                    <p class="text-lg text-gray-600 mt-2">Veja como ROSiE pode transformar seu fluxo de trabalho.</p>
+                </div>
+                <div class="space-y-12">
+                    <!-- Feature Item -->
+                    <div class="flex flex-col md:flex-row items-center gap-8">
+                        <div class="md:w-1/2 bg-rosie-blue text-white p-8 rounded-lg">
+                            <h3 class="text-2xl font-bold mb-3">1. Personalização com IA — "Aluno no centro"</h3>
+                            <ul class="list-disc list-inside space-y-2">
+                                <li><strong>Análise de competências:</strong> Identifica competências-chave e lacunas por estudante.</li>
+                                <li><strong>Perfis de aprendizagem:</strong> Agrupa comportamentos e sugere caminhos de estudo personalizados.</li>
+                            </ul>
+                        </div>
+                        <div class="md:w-1/2 text-gray-700">
+                             <p>A partir de um plano de ensino ou histórico de desempenho, ROSiE foca nas necessidades individuais de cada aluno, tornando o aprendizado mais eficaz.</p>
+                        </div>
+                    </div>
+                     <!-- Feature Item -->
+                    <div class="flex flex-col md:flex-row-reverse items-center gap-8">
+                        <div class="md:w-1/2 bg-rosie-dark-blue text-white p-8 rounded-lg">
+                            <h3 class="text-2xl font-bold mb-3">2. Planejamento de aula otimizado</h3>
+                            <ul class="list-disc list-inside space-y-2">
+                                <li><strong>Geração automática de planos de aula:</strong> Transforma conteúdo em sequências de aulas completas.</li>
+                                <li><strong>Sugestões práticas:</strong> Atividades, projetos, listas de exercícios e roteiros.</li>
+                                <li><strong>Organização de recursos:</strong> Coleta e sugere links, vídeos, e bibliografias.</li>
+                            </ul>
+                        </div>
+                        <div class="md:w-1/2 text-gray-700">
+                             <p>Economize tempo precioso com planos de aula gerados automaticamente, ricos em atividades e recursos relevantes para cada tópico.</p>
+                        </div>
+                    </div>
+                     <!-- Feature Item -->
+                    <div class="flex flex-col md:flex-row items-center gap-8">
+                        <div class="md:w-1/2 bg-rosie-red text-white p-8 rounded-lg">
+                            <h3 class="text-2xl font-bold mb-3">3. Extensão Chrome — Análise com Gemini</h3>
+                            <ul class="list-disc list-inside space-y-2">
+                                <li><strong>Extração automática de planos do SGN (SENAI):</strong> Coleta campos chave do plano.</li>
+                                <li><strong>Análise do plano por IA:</strong> O Gemini gera uma análise com possíveis correções e melhorias.</li>
+                            </ul>
+                        </div>
+                        <div class="md:w-1/2 text-gray-700">
+                             <p>Integre o ROSiE diretamente ao seu sistema de gestão. Extraia planos de ensino com um clique e receba análises inteligentes para aprimorá-los.</p>
+                        </div>
+                    </div>
+                     <!-- Feature Item -->
+                    <div class="flex flex-col md:flex-row-reverse items-center gap-8">
+                        <div class="md:w-1/2 bg-rosie-yellow text-gray-900 p-8 rounded-lg">
+                            <h3 class="text-2xl font-bold mb-3">4. Biblioteca colaborativa e mais</h3>
+                             <ul class="list-disc list-inside space-y-2">
+                                <li><strong>Biblioteca de prompts otimizados:</strong> Para planejamento, mediação e avaliação.</li>
+                                <li><strong>Simulados adaptativos:</strong> Preparação para o SAEP com feedback e relatórios.</li>
+                                <li><strong>Painéis e métricas:</strong> Identifique tópicos prioritários para turmas e estudantes.</li>
+                                 <li><strong>Documentação completa:</strong> Todos os prompts utilizados no projeto estão disponíveis.</li>
+                            </ul>
+                        </div>
+                        <div class="md:w-1/2 text-gray-700">
+                             <p>Um ecossistema completo de ferramentas para apoiar o docente, desde a criação de conteúdo até a análise de desempenho, com custo zero e total replicabilidade.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tecnologias Section -->
+        <section id="tecnologias" class="py-20 fade-in-section">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold text-rosie-dark-blue">Tecnologias Utilizadas</h2>
+                    <p class="text-lg text-gray-600 mt-2">Construído com ferramentas modernas, abertas e acessíveis.</p>
+                </div>
+                <div class="max-w-4xl mx-auto bg-white p-8 rounded-lg shadow-lg">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div>
+                            <h3 class="text-xl font-bold text-rosie-blue mb-4 border-b-2 border-rosie-blue pb-2">Frontend & Extensão</h3>
+                            <ul class="space-y-2 text-gray-700">
+                                <li><strong>React & TailwindCSS:</strong> Interface moderna e responsiva.</li>
+                                <li><strong>Node.js (v22):</strong> Ambiente de desenvolvimento.</li>
+                                <li><strong>JavaScript ES6+ & Chrome API:</strong> Para a extensão do navegador.</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold text-rosie-blue mb-4 border-b-2 border-rosie-blue pb-2">Backend & IA</h3>
+                            <ul class="space-y-2 text-gray-700">
+                                <li><strong>Python 3.8+ & Flask:</strong> Para o servidor e a lógica da API.</li>
+                                <li><strong>Google Gemini:</strong> O coração da inteligência artificial do projeto.</li>
+                                <li><strong>Markdown / HTML:</strong> Formatos para exportação de relatórios.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Conclusão Section -->
+        <section id="conclusao" class="py-20 bg-rosie-dark-blue text-white fade-in-section">
+            <div class="container mx-auto px-6 text-center">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">Por que usar ROSiE?</h2>
+                <p class="text-lg text-gray-300 max-w-3xl mx-auto mb-8">
+                    O ROSiE fornece soluções com uso exclusivo do Gemini, de forma gratuita e acessível.
+                </p>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <div class="bg-white/10 p-6 rounded-lg">
+                        <h3 class="text-xl font-bold text-rosie-yellow mb-2">Planejamento Otimizado</h3>
+                        <p>Fluxos e prompts que geram planos detalhados e atividades práticas.</p>
+                    </div>
+                    <div class="bg-white/10 p-6 rounded-lg">
+                        <h3 class="text-xl font-bold text-rosie-yellow mb-2">Mediação Dinâmica</h3>
+                        <p>Templates para gerar jogos, debates, e roteiros de simulação.</p>
+                    </div>
+                    <div class="bg-white/10 p-6 rounded-lg">
+                        <h3 class="text-xl font-bold text-rosie-yellow mb-2">Acessibilidade</h3>
+                        <p>Biblioteca de prompts e tutoriais passo-a-passo para qualquer docente.</p>
+                    </div>
+                    <div class="bg-white/10 p-6 rounded-lg">
+                        <h3 class="text-xl font-bold text-rosie-yellow mb-2">Custo Zero</h3>
+                        <p>O projeto foi pensado para operar usando a API Key gratuita do Gemini.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-12">
+        <div class="container mx-auto px-6 text-center">
+            <p class="font-bold text-lg mb-2">Feito com ❤️ pelos docentes do SENAI:</p>
+            <p class="text-gray-400">
+                Bruno Jose da Silva Batista • Lucas Eduardo Batista Ferreira • Bruno Musskopf • Thais Caroline Vieira • Vitor Fabiano Pruss
+            </p>
+            <div class="mt-4">
+                 <p class="text-sm text-gray-500">ROSiE Project &copy; 2024</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Fade in sections on scroll
+        const sections = document.querySelectorAll('.fade-in-section');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                }
+            });
+        }, {
+            threshold: 0.1
+        });
+
+        sections.forEach(section => {
+            observer.observe(section);
+        });
+    </script>
+</body>
+</html>
