@@ -19,20 +19,53 @@ document.addEventListener('DOMContentLoaded', function () {
             const tab = await getCurrentTab();
             if (!isValidTab(tab)) return;
 
+            // Verificar se é um PDF
+            if (tab.url.toLowerCase().endsWith('.pdf')) {
+                const results = await extractPDFData(tab);
+                processExtractionResults([{result: results}]);
+            } else {
+                // Usar o extrator padrão para HTML
+                await chrome.scripting.executeScript({
+                    target: { tabId: tab.id },
+                    files: ['extraction-functions.js']
+                });
+
+                const results = await chrome.scripting.executeScript({
+                    target: { tabId: tab.id },
+                    func: () => extractAllData()
+                });
+                
+                processExtractionResults(results);
+            }
+        } catch (error) {
+            console.error('Erro na extração automática:', error);
+            showStatus('Erro na extração: ' + error.message, 'error');
+        }
+    }
+
+    async function extractPDFData(tab) {
+        try {
+            // Primeiro, injetar os scripts do PDF.js
             await chrome.scripting.executeScript({
                 target: { tabId: tab.id },
-                files: ['extraction-functions.js']
+                files: ['pdf.min.js', 'pdf.worker.min.js']
             });
-
+            
+            // Depois, injetar e executar o extrator de PDF
+            await chrome.scripting.executeScript({
+                target: { tabId: tab.id },
+                files: ['pdf-extraction-functions.js']
+            });
+            
             const results = await chrome.scripting.executeScript({
                 target: { tabId: tab.id },
                 func: () => extractAllData()
             });
-
-            processExtractionResults(results);
-
+            
+            return results[0].result;
         } catch (error) {
-            console.error('Erro na extração automática:', error);
+            console.error('Erro na extração de PDF:', error);
+            throw error;
         }
     }
 
@@ -190,23 +223,45 @@ document.addEventListener('DOMContentLoaded', function () {
     function generateTeachingPlanText(dados) {
         let text = `PLANO DE ENSINO EXTRATO\n\n`;
 
-        if (dados.disciplina) text += `DISCIPLINA: ${dados.disciplina}\n`;
-        if (dados.codigoUC) text += `CÓDIGO UC: ${dados.codigoUC}\n`;
         if (dados.competenciaGeral) text += `COMPETÊNCIA GERAL: ${dados.competenciaGeral}\n\n`;
-
         if (dados.funcoes) text += `FUNÇÕES/CAPACIDADES:\n${dados.funcoes}\n\n`;
         if (dados.objetivosGerais) text += `OBJETIVOS GERAIS:\n${dados.objetivosGerais}\n\n`;
-
         if (dados.ambientesPedagogicos) text += `AMBIENTES PEDAGÓGICOS:\n${dados.ambientesPedagogicos}\n\n`;
-
         if (dados.outrosInstrumentos) text += `OUTROS INSTRUMENTOS DE AVALIAÇÃO:\n${dados.outrosInstrumentos}\n\n`;
 
-        if (dados.referenciasBasicas) text += `REFERÊNCIAS BÁSICAS:\n${dados.referenciasBasicas}\n\n`;
-        if (dados.referenciasComplementares) text += `REFERÊNCIAS COMPLEMENTARES:\n${dados.referenciasComplementares}\n\n`;
+        if (dados.referencias) {
+            if (dados.referencias.basicas) text += `REFERÊNCIAS BÁSICAS:\n${dados.referencias.basicas}\n\n`;
+            if (dados.referencias.complementares) text += `REFERÊNCIAS COMPLEMENTARES:\n${dados.referencias.complementares}\n\n`;
+        }
 
         if (dados.observacoes) text += `OBSERVAÇÕES:\n${dados.observacoes}\n\n`;
 
-        if (dados.situacoesAprendizagem) text += `SITUAÇÕES DE APRENDIZAGEM:\n${dados.situacoesAprendizagem}\n\n`;
+        if (dados.situacaoAprendizagem) {
+            text += `SITUAÇÃO DE APRENDIZAGEM:\n`;
+            if (dados.situacaoAprendizagem.capacidadesTecnicas) text += `CAPACIDADES TÉCNICAS:\n${dados.situacaoAprendizagem.capacidadesTecnicas}\n\n`;
+            if (dados.situacaoAprendizagem.objetosConhecimento) text += `OBJETOS DE CONHECIMENTO:\n${dados.situacaoAprendizagem.objetosConhecimento}\n\n`;
+            if (dados.situacaoAprendizagem.capacidadesSocioemocionais) text += `CAPACIDADES SOCIOEMOCIONAIS:\n${dados.situacaoAprendizagem.capacidadesSocioemocionais}\n\n`;
+            if (dados.situacaoAprendizagem.estrategiaAprendizagem) text += `ESTRATÉGIA DE APRENDIZAGEM: ${dados.situacaoAprendizagem.estrategiaAprendizagem}\n\n`;
+            if (dados.situacaoAprendizagem.contextualizacao) text += `CONTEXTUALIZAÇÃO:\n${dados.situacaoAprendizagem.contextualizacao}\n\n`;
+            if (dados.situacaoAprendizagem.desafio) text += `DESAFIO:\n${dados.situacaoAprendizagem.desafio}\n\n`;
+            if (dados.situacaoAprendizagem.resultadosEsperados) text += `RESULTADOS ESPERADOS:\n${dados.situacaoAprendizagem.resultadosEsperados}\n\n`;
+        }
+
+        if (dados.planosAula && dados.planosAula.length > 0) {
+            text += `PLANOS DE AULA:\n\n`;
+            dados.planosAula.forEach((plano, index) => {
+                text += `PLANO ${index + 1}:\n`;
+                text += `NOME: ${plano.nome || 'Não informado'}\n`;
+                text += `CH ALOCADA: ${plano.chAlocada || 'Não informada'}\n`;
+                if (plano.capacidades) text += `CAPACIDADES: ${plano.capacidades}\n`;
+                if (plano.conhecimentos) text += `CONHECIMENTOS: ${plano.conhecimentos}\n`;
+                if (plano.estrategias) text += `ESTRATÉGIAS: ${plano.estrategias}\n`;
+                if (plano.recursos) text += `RECURSOS: ${plano.recursos}\n`;
+                if (plano.criterios) text += `CRITÉRIOS: ${plano.criterios}\n`;
+                if (plano.instrumentos) text += `INSTRUMENTOS: ${plano.instrumentos}\n`;
+                text += '\n';
+            });
+        }
 
         return text;
     }
@@ -226,11 +281,11 @@ Exemplo: "Planejar, executar e avaliar processos de manutenção mecânica em si
 Objetivo: marcar funções (já cadastradas) relacionadas ao Perfil Profissional.
 Marque apenas as funções realmente contempladas na UC.
 Se a UC é introdutória, escolha funções mais básicas; se avançada, funções mais complexas.
-Exemplo: em uma UC de Soldagem, marcar “Executar processos de união de metais”, não funções de inspeção que são tratadas em outra UC.
+Exemplo: em uma UC de Soldagem, marcar "Executar processos de união de metais", não funções de inspeção que são tratadas em outra UC.
 
 - Objetivos Gerais da Unidade Curricular
 Objetivo: elaborar frases no infinitivo, coerentes com as competências previstas.
-Evite descrições vagas (ex.: “aprender sobre soldagem”).
+Evite descrições vagas (ex.: "aprender sobre soldagem").
 Exemplo: "Desenvolver a competência de preparar, ajustar e executar processos de soldagem em juntas metálicas, atendendo especificações técnicas e normas de segurança."
 
 Ambientes Pedagógicos
@@ -246,7 +301,7 @@ Objetivo: listar recursos complementares à avaliação prática/observação.
 Escreva em lista clara e objetiva.
 Exemplo:
 - Relatórios técnicos
-- Apresentações orais
+- Apresentações orales
 - Portfólio individual
 - Estudo de caso
 
@@ -262,7 +317,7 @@ Objetivo: usar esse campo para aspectos adicionais:
 Inclusão (alunos com necessidades específicas);
 Observações sobre recursos adicionais;
 Estratégias diferenciadas.
-Exemplo: "Prevê-se adaptação das práticas de soldagem para alunos com restrições motoras, priorizando atividades de inspeção visual."
+Exemplo: "Prevê-se adaptação das práticas de soldagem para alunos com restrições motoras, prioritizando atividades de inspeção visual."
 
 - Situações de Aprendizagem (SA)
 Aqui é preciso detalhar de forma clara e desafiadora:
@@ -307,40 +362,43 @@ Segue o Plano de Ensino:
 
         prompt += `DADOS DO PLANO DE ENSINO\n\n`;
 
-        if (dados.disciplina) prompt += `DISCIPLINA: ${dados.disciplina}\n`;
-        if (dados.codigoUC) prompt += `CÓDIGO UC: ${dados.codigoUC}\n`;
         if (dados.competenciaGeral) prompt += `COMPETÊNCIA GERAL: ${dados.competenciaGeral}\n\n`;
-
         if (dados.funcoes) prompt += `FUNÇÕES/CAPACIDADES:\n${dados.funcoes}\n\n`;
         if (dados.objetivosGerais) prompt += `OBJETIVOS GERAIS:\n${dados.objetivosGerais}\n\n`;
-
         if (dados.ambientesPedagogicos) prompt += `AMBIENTES PEDAGÓGICOS:\n${dados.ambientesPedagogicos}\n\n`;
-
         if (dados.outrosInstrumentos) prompt += `OUTROS INSTRUMENTOS DE AVALIAÇÃO:\n${dados.outrosInstrumentos}\n\n`;
 
-        if (dados.referenciasBasicas) prompt += `REFERÊNCIAS BÁSICAS:\n${dados.referenciasBasicas}\n\n`;
-        if (dados.referenciasComplementares) prompt += `REFERÊNCIAS COMPLEMENTARES:\n${dados.referenciasComplementares}\n\n`;
+        if (dados.referencias) {
+            if (dados.referencias.basicas) prompt += `REFERÊNCIAS BÁSICAS:\n${dados.referencias.basicas}\n\n`;
+            if (dados.referencias.complementares) prompt += `REFERÊNCIAS COMPLEMENTARES:\n${dados.referencias.complementares}\n\n`;
+        }
 
-        if (dados.observacoes) prompt += `OBSERVAÇÕES:\n${dados.observacoes}\n\n`;
+        if (dados.observacoes) prompt += `OBSERVAÇões:\n${dados.observacoes}\n\n`;
 
-        if (dados.situacoesAprendizagem) prompt += `SITUAÇÕES DE APRENDIZAGEM:\n${dados.situacoesAprendizagem}\n\n`;
-
-        if (dados.capacidadesTecnicasSituacao) prompt += `CAPACIDADES TÉCNICAS:\n${dados.capacidadesTecnicasSituacao}\n\n`;
-        if (dados.objetosConhecimentoSituacao) prompt += `OBJETOS DE CONHECIMENTO:\n${dados.objetosConhecimentoSituacao}\n\n`;
-        if (dados.capacidadesSocioemocionaisSituacao) prompt += `CAPACIDADES SOCIOEMOCIONAIS:\n${dados.capacidadesSocioemocionaisSituacao}\n\n`;
-        if (dados.contextualizacaoSituacao) prompt += `CONTEXTUALIZAÇÃO:\n${dados.contextualizacaoSituacao}\n\n`;
-        if (dados.desafioSituacao) prompt += `DESAFIO:\n${dados.desafioSituacao}\n\n`;
-        if (dados.resultadosEsperadosSituacao) prompt += `RESULTADOS ESPERADOS:\n${dados.resultadosEsperadosSituacao}\n\n`;
+        if (dados.situacaoAprendizagem) {
+            prompt += `SITUAÇÃO DE APRENDIZAGEM:\n`;
+            if (dados.situacaoAprendizagem.capacidadesTecnicas) prompt += `CAPACIDADES TÉCNICAS:\n${dados.situacaoAprendizagem.capacidadesTecnicas}\n\n`;
+            if (dados.situacaoAprendizagem.objetosConhecimento) prompt += `OBJETOS DE CONHECIMENTO:\n${dados.situacaoAprendizagem.objetosConhecimento}\n\n`;
+            if (dados.situacaoAprendizagem.capacidadesSocioemocionais) prompt += `CAPACIDADES SOCIOEMOCIONAIS:\n${dados.situacaoAprendizagem.capacidadesSocioemocionais}\n\n`;
+            if (dados.situacaoAprendizagem.estrategiaAprendizagem) prompt += `ESTRATÉGIA DE APRENDIZAGEM: ${dados.situacaoAprendizagem.estrategiaAprendizagem}\n\n`;
+            if (dados.situacaoAprendizagem.contextualizacao) prompt += `CONTEXTUALIZAÇÃO:\n${dados.situacaoAprendizagem.contextualizacao}\n\n`;
+            if (dados.situacaoAprendizagem.desafio) prompt += `DESAFIO:\n${dados.situacaoAprendizagem.desafio}\n\n`;
+            if (dados.situacaoAprendizagem.resultadosEsperados) prompt += `RESULTADOS ESPERADOS:\n${dados.situacaoAprendizagem.resultadosEsperados}\n\n`;
+        }
 
         if (dados.planosAula && dados.planosAula.length > 0) {
             prompt += `PLANOS DE AULA:\n\n`;
-
             dados.planosAula.forEach((plano, index) => {
-                prompt += `TÍTULO: ${plano.titulo || 'Não informado'}\n`;
-                prompt += `CARGA HORÁRIA: ${plano.cargaHoraria || 'Não informada'}\n`;
-                prompt += `CRITÉRIOS DE AVALIAÇÃO: ${plano.criteriosAvaliacao || 'Não informados'}\n`;
-                prompt += `INSTRUMENTOS DE AVALIAÇÃO: ${plano.instrumentoAvaliacao || 'Não informados'}\n`;
-                prompt += `RECURSOS PEDAGÓGICOS: ${plano.recursosPedagogicos || 'Não informados'}\n\n`;
+                prompt += `PLANO ${index + 1}:\n`;
+                prompt += `NOME: ${plano.nome || 'Não informado'}\n`;
+                prompt += `CH ALOCADA: ${plano.chAlocada || 'Não informada'}\n`;
+                if (plano.capacidades) prompt += `CAPACIDADES: ${plano.capacidades}\n`;
+                if (plano.conhecimentos) prompt += `CONHECIMENTOS: ${plano.conhecimentos}\n`;
+                if (plano.estrategias) prompt += `ESTRATÉGIAS: ${plano.estrategias}\n`;
+                if (plano.recursos) prompt += `RECURSOS: ${plano.recursos}\n`;
+                if (plano.criterios) prompt += `CRITÉRIOS: ${plano.criterios}\n`;
+                if (plano.instrumentos) prompt += `INSTRUMENTOS: ${plano.instrumentos}\n`;
+                prompt += '\n';
             });
         }
 

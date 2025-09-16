@@ -3,7 +3,35 @@
     "name": "S-GemiNi",
     "version": "1.0",
     "description": "Extrai dados de planos de ensino para analisar com Gemini",
-    "permissions": ["activeTab", "scripting"],
+    "permissions": [
+        "activeTab",
+        "scripting",
+        "webRequest",
+        "webRequestBlocking",
+        "<all_urls>"
+    ],
+    "host_permissions": [
+        "<all_urls>"
+    ],
+    "background": {
+        "service_worker": "background.js",
+        "type": "module"
+    },
+    "web_accessible_resources": [
+        {
+            "resources": [
+                "pdf.min.js",
+                "pdf.worker.min.js",
+                "pdf-extraction-functions.js"
+            ],
+            "matches": [
+                "<all_urls>"
+            ]
+        }
+    ],
+    "content_security_policy": {
+        "extension_pages": "script-src 'self' 'wasm-unsafe-eval'; object-src 'self'"
+    },
     "action": {
         "default_popup": "popup.html",
         "default_icon": {
@@ -16,11 +44,5 @@
         "16": "icons/icon16.png",
         "48": "icons/icon48.png",
         "128": "icons/icon128.png"
-    },
-    "web_accessible_resources": [
-        {
-            "resources": ["extraction-functions.js"],
-            "matches": ["<all_urls>"]
-        }
-    ]
+    }
 }
