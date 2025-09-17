@@ -50,18 +50,19 @@
 </head>
 <body class="bg-rosie-bg text-gray-800">
 
-    <!-- Header / Navigation -->
+
     <header class="bg-white/80 backdrop-blur-lg sticky top-0 z-50 shadow-sm">
         <nav class="container mx-auto px-6 py-3 flex justify-between items-center">
             <div class="flex items-center space-x-3">
-                <img src="rosie-logo.png" alt="ROSiE Logo" class="h-10 w-10">
+                <img src="https://iili.io/KAlsDdu.png" alt="ROSiE Logo" class="h-10 w-10">
                 <span class="text-2xl font-bold text-rosie-dark-blue">ROSiE</span>
             </div>
+            <!-- Header / Navigation -->
             <div class="hidden md:flex items-center space-x-6">
+                <a href="#conclusao" class="text-gray-600 hover:text-rosie-blue transition duration-300">Por que usar?</a>
                 <a href="#desafios" class="text-gray-600 hover:text-rosie-blue transition duration-300">Desafios</a>
                 <a href="#funcionalidades" class="text-gray-600 hover:text-rosie-blue transition duration-300">Funcionalidades</a>
                 <a href="#tecnologias" class="text-gray-600 hover:text-rosie-blue transition duration-300">Tecnologias</a>
-                <a href="#conclusao" class="text-gray-600 hover:text-rosie-blue transition duration-300">Por que usar?</a>
             </div>
              <button id="mobile-menu-button" class="md:hidden p-2 rounded-md text-gray-600 hover:bg-gray-100 focus:outline-none">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
@@ -69,18 +70,18 @@
         </nav>
         <!-- Mobile Menu -->
         <div id="mobile-menu" class="hidden md:hidden px-6 pb-4">
+            <a href="#conclusao" class="block py-2 text-gray-600 hover:text-rosie-blue transition duration-300">Por que usar?</a>
             <a href="#desafios" class="block py-2 text-gray-600 hover:text-rosie-blue transition duration-300">Desafios</a>
             <a href="#funcionalidades" class="block py-2 text-gray-600 hover:text-rosie-blue transition duration-300">Funcionalidades</a>
             <a href="#tecnologias" class="block py-2 text-gray-600 hover:text-rosie-blue transition duration-300">Tecnologias</a>
-            <a href="#conclusao" class="block py-2 text-gray-600 hover:text-rosie-blue transition duration-300">Por que usar?</a>
         </div>
     </header>
-
+     
     <main>
         <!-- Hero Section -->
         <section class="min-h-screen flex items-center justify-center bg-white fade-in-section">
             <div class="container mx-auto px-6 text-center">
-                <img src="rosie-logo.png" alt="ROSiE Logo" class="w-40 h-40 mx-auto mb-6">
+                <img src="https://iili.io/KAlsDdu.png" alt="ROSiE Logo" class="w-40 h-40 mx-auto mb-6">
                 <h1 class="text-4xl md:text-6xl font-bold text-rosie-dark-blue mb-4">Bem-vindo ao ROSiE</h1>
                 <p class="text-lg md:text-xl text-gray-600 mb-6 max-w-3xl mx-auto">
                     <span class="font-semibold text-rosie-blue">R</span>eimaginar e <span class="font-semibold text-rosie-blue">O</span>rganizar os <span class="font-semibold text-rosie-blue">S</span>aberes <span class="font-semibold text-rosie-blue">I</span>ndividuais dos <span class="font-semibold text-rosie-blue">E</span>studantes
@@ -92,6 +93,34 @@
                     <a href="#desafios" class="bg-rosie-blue text-white font-bold py-3 px-8 rounded-full hover:bg-rosie-dark-blue transition duration-300 text-lg">
                         Descubra a Solução
                     </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Conclusão Section -->
+        <section id="conclusao" class="py-20 bg-rosie-dark-blue text-white fade-in-section">
+            <div class="container mx-auto px-6 text-center">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">Por que usar ROSiE?</h2>
+                <p class="text-lg text-gray-300 max-w-3xl mx-auto mb-8">
+                    O ROSiE fornece soluções com uso exclusivo do Gemini, de forma gratuita e acessível.
+                </p>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <div class="bg-white/10 p-6 rounded-lg">
+                        <h3 class="text-xl font-bold text-rosie-yellow mb-2">Planejamento Otimizado</h3>
+                        <p>Fluxos e prompts que geram planos detalhados e atividades práticas.</p>
+                    </div>
+                    <div class="bg-white/10 p-6 rounded-lg">
+                        <h3 class="text-xl font-bold text-rosie-yellow mb-2">Mediação Dinâmica</h3>
+                        <p>Templates para gerar jogos, debates, e roteiros de simulação.</p>
+                    </div>
+                    <div class="bg-white/10 p-6 rounded-lg">
+                        <h3 class="text-xl font-bold text-rosie-yellow mb-2">Acessibilidade</h3>
+                        <p>Biblioteca de prompts e tutoriais passo-a-passo para qualquer docente.</p>
+                    </div>
+                    <div class="bg-white/10 p-6 rounded-lg">
+                        <h3 class="text-xl font-bold text-rosie-yellow mb-2">Custo Zero</h3>
+                        <p>O projeto foi pensado para operar usando a API Key gratuita do Gemini.</p>
+                    </div>
                 </div>
             </div>
         </section>
@@ -234,34 +263,6 @@
                 </div>
             </div>
         </section>
-
-        <!-- Conclusão Section -->
-        <section id="conclusao" class="py-20 bg-rosie-dark-blue text-white fade-in-section">
-            <div class="container mx-auto px-6 text-center">
-                <h2 class="text-3xl md:text-4xl font-bold mb-4">Por que usar ROSiE?</h2>
-                <p class="text-lg text-gray-300 max-w-3xl mx-auto mb-8">
-                    O ROSiE fornece soluções com uso exclusivo do Gemini, de forma gratuita e acessível.
-                </p>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                    <div class="bg-white/10 p-6 rounded-lg">
-                        <h3 class="text-xl font-bold text-rosie-yellow mb-2">Planejamento Otimizado</h3>
-                        <p>Fluxos e prompts que geram planos detalhados e atividades práticas.</p>
-                    </div>
-                    <div class="bg-white/10 p-6 rounded-lg">
-                        <h3 class="text-xl font-bold text-rosie-yellow mb-2">Mediação Dinâmica</h3>
-                        <p>Templates para gerar jogos, debates, e roteiros de simulação.</p>
-                    </div>
-                    <div class="bg-white/10 p-6 rounded-lg">
-                        <h3 class="text-xl font-bold text-rosie-yellow mb-2">Acessibilidade</h3>
-                        <p>Biblioteca de prompts e tutoriais passo-a-passo para qualquer docente.</p>
-                    </div>
-                    <div class="bg-white/10 p-6 rounded-lg">
-                        <h3 class="text-xl font-bold text-rosie-yellow mb-2">Custo Zero</h3>
-                        <p>O projeto foi pensado para operar usando a API Key gratuita do Gemini.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
     </main>
 
     <!-- Footer -->
@@ -269,10 +270,14 @@
         <div class="container mx-auto px-6 text-center">
             <p class="font-bold text-lg mb-2">Feito com ❤️ pelos docentes do SENAI:</p>
             <p class="text-gray-400">
-                Bruno Jose da Silva Batista • Lucas Eduardo Batista Ferreira • Bruno Musskopf • Thais Caroline Vieira • Vitor Fabiano Pruss
+                <a href="https://www.linkedin.com/in/batistabjs/">Bruno Jose da Silva Batista</a> 
+                • <a href="https://www.linkedin.com/in/lucasedferreira/">Lucas Eduardo Batista Ferreira</a> 
+                • <a href="https://www.linkedin.com/in/bruno-musskopf-020b57302">Bruno Musskopf</a> 
+                • <a href="https://www.linkedin.com/in/tha%C3%ADs-caroline-vieira">Thais Caroline Vieira</a> 
+                • <a href="https://www.linkedin.com/in/vitorpruss">Vitor Fabiano Pruss</a>
             </p>
             <div class="mt-4">
-                 <p class="text-sm text-gray-500">ROSiE Project &copy; 2024</p>
+                 <p class="text-sm text-gray-500">ROSiE Project &copy; 2025</p>
             </div>
         </div>
     </footer>
