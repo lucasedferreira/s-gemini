@@ -212,29 +212,6 @@ export default function Turmas() {
           </div>
         </CardContent>
       </Card>
-
-      {/* Class Statistics */}
-      <Card className="bg-gradient-card border-border shadow-card">
-        <CardHeader>
-          <CardTitle className="text-xl text-foreground">Estatísticas Gerais</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="text-center">
-              <div className="text-3xl font-bold text-primary mb-2">{turmasCadastradas.length}</div>
-              <div className="text-sm text-muted-foreground">Turmas Ativas</div>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl font-bold text-primary mb-2">147</div>
-              <div className="text-sm text-muted-foreground">Total de Alunos</div>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl font-bold text-primary mb-2">3</div>
-              <div className="text-sm text-muted-foreground">Cursos Oferecidos</div>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
     </div>
   );
 }

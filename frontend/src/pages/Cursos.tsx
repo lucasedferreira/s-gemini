@@ -169,32 +169,9 @@ export default function Cursos() {
 
           {/* Sample Competencies Display */}
           <div className="mt-6 p-6 border border-primary/20 rounded-lg bg-primary/5">
-            <h4 className="font-medium text-foreground mb-4">Competências Identificadas (Exemplo)</h4>
+            <h4 className="font-medium text-foreground mb-4">Competências Identificadas:</h4>
             <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-              <div className="text-center">
-                <div className="text-2xl font-bold text-primary">90%</div>
-                <div className="text-sm text-muted-foreground">Lógica de Programação</div>
-              </div>
-              <div className="text-center">
-                <div className="text-2xl font-bold text-primary">85%</div>
-                <div className="text-sm text-muted-foreground">Banco de Dados</div>
-              </div>
-              <div className="text-center">
-                <div className="text-2xl font-bold text-primary">80%</div>
-                <div className="text-sm text-muted-foreground">Interface de Usuário</div>
-              </div>
-              <div className="text-center">
-                <div className="text-2xl font-bold text-primary">75%</div>
-                <div className="text-sm text-muted-foreground">Arquitetura de Software</div>
-              </div>
-              <div className="text-center">
-                <div className="text-2xl font-bold text-primary">70%</div>
-                <div className="text-sm text-muted-foreground">Testes e Qualidade</div>
-              </div>
-              <div className="text-center">
-                <div className="text-2xl font-bold text-primary">65%</div>
-                <div className="text-sm text-muted-foreground">Gestão de Projetos</div>
-              </div>
+              
             </div>
           </div>
         </CardContent>
