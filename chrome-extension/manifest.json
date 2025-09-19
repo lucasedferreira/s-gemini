@@ -3,7 +3,7 @@
     "name": "S-GemiNi",
     "version": "1.0",
     "description": "Extrai dados de planos de ensino para analisar com Gemini",
-    "permissions": ["activeTab", "scripting"],
+    "permissions": ["activeTab", "scripting", "storage"],
     "host_permissions": ["https://*/*", "http://*/*"],
     "web_accessible_resources": [
         {

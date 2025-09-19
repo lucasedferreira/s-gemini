@@ -4,14 +4,56 @@ document.addEventListener('DOMContentLoaded', function () {
     const copyBtn = document.getElementById('copyBtn');
     const analyzeBtn = document.getElementById('analyzeBtn');
     const status = document.getElementById('status');
+    const settingsBtn = document.getElementById('settingsBtn');
+    const settingsPanel = document.getElementById('settingsPanel');
+    const closeSettings = document.getElementById('closeSettings');
+    const apiKeyInput = document.getElementById('apiKeyInput');
+    const saveApiKey = document.getElementById('saveApiKey');
 
     let extractedData = null;
+    let geminiApiKey = '';
+
+    // Carregar API key salva
+    chrome.storage.sync.get(['geminiApiKey'], function(result) {
+        if (result.geminiApiKey) {
+            geminiApiKey = result.geminiApiKey;
+        }
+    });
 
     // Verificar se estamos em um PDF online ao carregar
     checkCurrentTab();
 
     copyBtn.addEventListener('click', handleCopy);
     analyzeBtn.addEventListener('click', handleAnalyze);
+    settingsBtn.addEventListener('click', showSettings);
+    closeSettings.addEventListener('click', hideSettings);
+    saveApiKey.addEventListener('click', saveApiKeyHandler);
+
+    function showSettings() {
+        settingsPanel.style.display = 'block';
+        // Preencher com a API key atual se existir
+        apiKeyInput.value = geminiApiKey;
+    }
+
+    function hideSettings() {
+        settingsPanel.style.display = 'none';
+    }
+
+    function saveApiKeyHandler() {
+        const apiKey = apiKeyInput.value.trim();
+        if (apiKey) {
+            chrome.storage.sync.set({geminiApiKey: apiKey}, function() {
+                geminiApiKey = apiKey;
+                showStatus('API Key salva com sucesso!', 'success');
+                hideSettings();
+                setTimeout(() => {
+                    hideStatus();
+                }, 3000);
+            });
+        } else {
+            showStatus('Por favor, digite uma API Key válida', 'error');
+        }
+    }
 
     async function checkCurrentTab() {
         try {
@@ -272,6 +314,12 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     async function handleAnalyze() {
+        if (!geminiApiKey) {
+            showStatus('Configure sua API Key primeiro', 'error');
+            showSettings();
+            return;
+        }
+
         if (!extractedData) {
             // Se não temos dados extraídos, oferecer upload
             showStatus('Selecionar PDF para analisar...', 'info');
@@ -354,7 +402,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
             const response = await fetch(`${API_URL}/api/analyze`, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'Gemini-API-Key': geminiApiKey
+                },
                 body: JSON.stringify({ prompt: promptText })
             });
 
@@ -458,7 +509,7 @@ Objetivo: usar esse campo para aspectos adicionais:
 Inclusão (alunos com necessidades específicas);
 Observações sobre recursos adicionais;
 Estratégias diferenciadas.
-Exemplo: "Prevê-se adaptação das práticas de soldagem para alunos com restrições motoras, prioritizando atividades de inspeção visual."
+Exemplo: "Prevê-se adaptação das práticas de soldagem para alunos com restrições motoras, prioritariamente atividades de inspeção visual."
 
 - Situações de Aprendizagem (SA)
 Aqui é preciso detalhar de forma clara e desafiadora:
