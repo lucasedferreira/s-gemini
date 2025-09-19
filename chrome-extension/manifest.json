@@ -4,7 +4,6 @@
     "version": "1.0",
     "description": "Extrai dados de planos de ensino para analisar com Gemini",
     "permissions": ["activeTab", "scripting", "storage"],
-    "host_permissions": ["https://*/*", "http://*/*"],
     "web_accessible_resources": [
         {
             "resources": ["pdf.min.js", "pdf.worker.min.js"],
