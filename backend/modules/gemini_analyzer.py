@@ -4,11 +4,11 @@ from google.genai import types
 from config import Config
 
 class GeminiAnalyzer:
-    def __init__(self):
-        if not Config.GEMINI_API_KEY:
-            raise ValueError("GEMINI_API_KEY não encontrada nas variáveis de ambiente")
+    def __init__(self, gemini_api_key):
+        if not gemini_api_key:
+            raise ValueError("GEMINI_API_KEY não informada")
         
-        self.client = genai.Client(api_key=Config.GEMINI_API_KEY)
+        self.client = genai.Client(api_key=gemini_api_key)
     
     def analyze_content(self, prompt: str) -> dict:
         """
