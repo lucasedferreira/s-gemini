@@ -1,6 +1,6 @@
 # 🌐 Bem-vindo ao ROSiE
 
-> **ROSiE** significa **Reimaginar** e **Organizar** os **Saberes** **Individuais** dos **Estudantes**
+> **ROSiE**: **Reimaginar** e **Organizar** os **Saberes** **Individuais** dos **Estudantes**
 
 **ROSiE** nasceu para enfrentar um problema real: como criar, centralizar e personalizar conteúdos pedagógicos que realmente façam os estudantes reterem conhecimento — reduzindo reprovações, evasão e retrabalho. Aproveitamos as capacidades do ecossistema Gemini (Chat, Gems, NotebookLM, etc.) para construir um fluxo que transforma planos de ensino em atividades, avaliações e relatórios orientados ao estudante, com ênfase em acessibilidade, custo zero e replicabilidade.
 
@@ -30,7 +30,7 @@ ROSiE foi projetado para atacar diretamente esses pontos, entregando automação
 
 ---
 
-# Funcionalidades principais
+# Principais Funcionalidades
 
 ## 1. Personalização com IA — "Aluno no centro"
 
@@ -75,7 +75,7 @@ ROSiE foi projetado para atacar diretamente esses pontos, entregando automação
 
 ---
 
-# Conclusão — Por que usar ROSiE?
+# Por que usar ROSiE?
 
 O ROSiE fornece soluções com uso exclusivo do Gemini, de forma gratuita e acessível:
 
@@ -87,7 +87,7 @@ O ROSiE fornece soluções com uso exclusivo do Gemini, de forma gratuita e aces
 
 ---
 
-# Como rodar localmente & Tecnologias utilizadas
+# Como rodar localmente
 
 
 1. Clonar
@@ -126,7 +126,7 @@ npm run dev
 Abra chrome://extensions/ → Modo desenvolvedor → Carregar sem compactação → selecione chrome-extension/
 
 
-**Tecnologias utilizadas**
+# Tecnologias utilizadas 
 
 * Frontend: **React**, **TailwindCSS**, **Node.js (v22)**
 * Extensão: **JavaScript ES6+**, **HTML5/CSS3**, **Chrome Extension API**
@@ -149,9 +149,8 @@ Abra chrome://extensions/ → Modo desenvolvedor → Carregar sem compactação 
 # Créditos
 
 Desenvolvido para o Hackathon Docente - Gemini (SENAI) por
-- Bruno Jose da Silva Batista
-- Lucas Eduardo Batista Ferreira
-- Bruno Musskopf
-- Thais Caroline Vieira
-- Vitor Fabiano Pruss
-
+- [Bruno Jose da Silva Batista](https://www.linkedin.com/in/batistabjs/)
+- [Lucas Eduardo Batista Ferreira](https://www.linkedin.com/in/lucasedferreira/)
+- [Bruno Musskopf](https://www.linkedin.com/in/bruno-musskopf-020b57302)
+- [Thais Caroline Vieira](https://www.linkedin.com/in/tha%C3%ADs-caroline-vieira)
+- [Vitor Fabiano Pruss](https://www.linkedin.com/in/vitorpruss)
